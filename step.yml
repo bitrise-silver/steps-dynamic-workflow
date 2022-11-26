@@ -1,0 +1,75 @@
+title: |-
+  Dynamic Workflow
+summary: |
+  Trigger a Bitrise build with dynamic generated yml
+description: |
+  The step generates dynamic yml file based on template and commit to a repo which later triggers a Bitrise run
+website: https://github.com/bitrise-silver/steps-dynamic-workflow
+source_code_url: https://github.com/bitrise-silver/steps-dynamic-workflow
+support_url: https://github.com/bitrise-silver/steps-dynamic-workflow/issues
+
+type_tags:
+  - utility
+
+toolkit:
+  go:
+    package_name: github.com/bitrise-silver/steps-dynamic-workflow
+
+inputs:
+  - template_file:
+    opts:
+      title: "Template file"
+      summary: Path to template file
+      is_expand: true
+      is_required: true
+  - value_file:
+    opts:
+      title: "Value file"
+      summary: File where values defined before being passed to template
+      is_expand: true
+      is_required: true
+  - repository_url: $GIT_REPOSITORY_URL
+    opts:
+      title: "Repository URL where Bitrise yml is commited into"
+      summary: Repository which generated Bitrise yml is commited into
+      is_expand: true
+      is_required: true
+  - repository_branch: bitrise-dynamic-workflow-$BITRISE_BUILD_NUMBER
+    opts:
+      title: "Repository branch where Bitrise yml is commited into"
+      summary: Branch which generated Bitrise yml is commited into
+      is_expand: true
+      is_required: true
+  - clean_up_branch_after_used: "yes"
+    opts:
+      title: "Remove branch after used"
+      summary: Remove branch after used. This will wait for the build to complete.
+      is_expand: true
+      is_required: true
+      value_options:
+      - "yes"
+      - "no"
+  - access_token: $BITRISE_TOKEN
+    opts:
+      title: Bitrise Access Token
+      summary: Your access token
+      description: |
+          Your access token
+
+          To acquire a `Personal Access Token` for your user, sign in with that user on [bitrise.io](https://bitrise.io),
+          go to your `Account Settings` page, and select the [Security tab](https://www.bitrise.io/me/profile#/security) on the left side.
+      is_expand: true
+      is_required: true
+      is_sensitive: true
+  - pipeline_id:
+    opts:
+      title: "Pipeline ID to be trigger"
+      summary: Pipeline ID to be trigger
+      is_expand: true
+      is_required: true
+
+outputs:
+  - DYNAMIC_TRIGGERED_BUILD_ID:
+    opts:
+      title: "Triggered build id"
+      summary: Triggered build id
